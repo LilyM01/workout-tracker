@@ -9,6 +9,7 @@ namespace WorkoutTracker.Models
         [Required]
         public string? Name{ get; set; }
 
+        public List<LiftSet>? LiftSets { get; set; } = new List<LiftSet>();
         //list of lifttypes
     }
 }
