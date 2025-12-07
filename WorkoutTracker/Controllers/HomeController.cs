@@ -13,12 +13,7 @@ namespace WorkoutTracker.Controllers
 
         public IActionResult CreateEditWorkout()
         {
-            return View();
-        }
-
-        public IActionResult CreateEditWorkoutForm( Workout model )
-        {
-            return RedirectToAction("Workouts");
+            return View("~/Views/CreateEditWorkout/CreateEditWorkout.cshtml");
         }
 
         public IActionResult Workouts() 

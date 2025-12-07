@@ -2,13 +2,24 @@
 
 namespace WorkoutTracker.Models
 {
+    public class WorkoutModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string? Name{ get; set; }
+
+        public List<LiftSet>? LiftSets { get; set; } = new List<LiftSet>();
+        //list of lifttypes
+    }
+
     public class LiftSet
     {
         public int Id { get; set; }
 
         [Required]
         public string? LiftName { get; set; }
-        
+
         public int SetCount { get; set; }
 
         public decimal RepCount { get; set; }
@@ -18,4 +29,6 @@ namespace WorkoutTracker.Models
         public decimal Weight { get; set; }
         public string? WeightUnit { get; set; }
     }
+
+
 }

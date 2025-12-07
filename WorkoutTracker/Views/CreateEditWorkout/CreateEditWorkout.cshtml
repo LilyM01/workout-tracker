@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Create / Edit";
+}
+
+@model WorkoutTracker.Models.WorkoutModel
+
+<div class="text-center">
+    <h1 class="display-4">Create or edit a workout</h1>
+</div>
+
+<!--create workout model and place values in after form creation-->
+<form asp-action="WorkoutForm" method="post">
+    <label>Id</label>
+    <input class="form-control" type="number" placeholder="0" asp-for="Id" />
+    <label class="mt-4">Name</label>
+    <input class="form-control" type="text" placeholder="Add a name for the workout" asp-for="Name" />
+
+    <!--contains all printed liftset items-->
+    <div id="liftset-items-container">
+        @for (int i = 0; i < Model.LiftSets.Count; i++)
+        {
+            //print each liftset field
+            <div class="form-group dynamic-item">
+                <input class="form-control" type="number" placeholder="0" asp-for="LiftSets[i].Id" />
+                <input class="form-control" type="string" placeholder="Name of lift" asp-for="LiftSets[i].LiftName" />
+                <input class="form-control" type="number" placeholder="0" asp-for="LiftSets[i].SetCount" />
+                <input class="form-control" type="number" placeholder="0" asp-for="LiftSets[i].RepCount" />
+                <select class="form-control" type="string" placeholder="Unit" asp-for="LiftSets[i].RepUnit">
+                    <option value="reps"></option>
+                    <option value="meters">m</option>
+                    <option value="kilometers">km</option>
+                    <option value="feet">ft</option>
+                    <option value="yards">yd</option>
+                    <option value="miles">mi</option>
+                </select>
+                <input class="form-control" type="number" placeholder="0" asp-for="LiftSets[i].Weight" />
+                <select class="form-control" type="string" placeholder="Unit" asp-for="LiftSets[i].WeightUnit">
+                    <option value="none"></option>
+                    <option value="pounds">lb</option>
+                    <option value="kilograms">kg</option>
+                </select>
+                <button type="button" class="btn btn-danger remove-item">Remove</button>
+            </div>
+        }
+
+    </div>
+    <button class="btn btn-secondary mt-4" id="add-set-button">Add sets</button>
+
+    <button class="btn btn-primary mt-4" type="submit">Save</button>
+</form>
+
+@section ManageLifts {
+    <script src="code.jquery.com"></script>
+    <script>
+        $(document).ready(function () {
+            //function to add a new input field
+            $('#add-set-button').click(function () {
+                addItemField();
+            });
+
+            //function to remove an input field using delegation
+            $('#liftset-items-container').on('click', '.remove-item', function () {
+                $(this).closest('.dynamic-item').remove();
+                updateInputNames();
+            });
+
+            function addItemField() {
+                var container = $('#liftset-items-container');
+                var itemCount = container.find('.dynamic-item').length;
+
+                //generate the correct 'name' attribute for MVC binding
+                var newItemHtml = `
+                    <div class="form-group dynamic-item">
+                            <input name="LiftSets[${itemCount}].Id" class="form-control" type="number" placeholder="0" />
+                            <input name="LiftSets[${itemCount}].LiftName" class="form-control" type="string" placeholder="Name of lift" />
+                            <input name="LiftSets[${itemCount}].SetCount" class="form-control" type="number" placeholder="0" />
+                            <input name="LiftSets[${itemCount}].RepCount" class="form-control" type="number" placeholder="0" />
+                            <select name="LiftSets[${itemCount}].RepUnit" class="form-control" type="string" placeholder="Unit">
+                                <option value="reps"></option>
+                                <option value="meters">m</option>
+                                <option value="kilometers">km</option>
+                                <option value="feet">ft</option>
+                                <option value="yards">yd</option>
+                                <option value="miles">mi</option>
+                            </select>
+                            <input name="LiftSets[${itemCount}].Weight" class="form-control" type="number" placeholder="0" />
+                            <select name="LiftSets[${itemCount}].WeightUnit" class="form-control" type="string" placeholder="Unit">
+                                <option value="none"></option>
+                                <option value="pounds">lb</option>
+                                <option value="kilograms">kg</option>
+                            </select>
+                            <button type="button" class="btn btn-danger remove-item">Remove</button>
+                    </div>`;
+
+                container.append(newItemHtml);
+            }
+
+            //helper function to re-index names if items are removed
+            function updateInputNames() {
+                //find all input elements within the liftset-items-container 
+                var items = $('#liftset-items-container').find('.dynamic-item input');
+                //iterate over collection of found inputs
+                items.each(function(index) {
+                    //for each input found, update its name attribute
+                    $(this).find('input[placeholder="Id"]').attr('name', `Items[${index}].Id`);
+                });
+            }
+        });
+    </script>
+}
