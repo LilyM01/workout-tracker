@@ -4,12 +4,16 @@ namespace WorkoutTracker.Models
 {
     public class WorkoutModel
     {
+        public WorkoutModel()
+        {
+            this.LiftSets = new List<LiftSet>();
+        }
         public int Id { get; set; }
 
         [Required]
         public string? Name{ get; set; }
 
-        public List<LiftSet>? LiftSets { get; set; } = new List<LiftSet>();
+        public List<LiftSet> LiftSets { get; set; } = new List<LiftSet>();
         //list of lifttypes
     }
 

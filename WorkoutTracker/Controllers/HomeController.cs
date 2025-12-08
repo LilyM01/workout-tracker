@@ -11,9 +11,25 @@ namespace WorkoutTracker.Controllers
             return View();
         }
 
-        public IActionResult CreateEditWorkout()
+        public IActionResult CreateWorkout()
         {
-            return View("~/Views/CreateEditWorkout/CreateEditWorkout.cshtml");
+            var model = new WorkoutModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateWorkout(WorkoutModel model)
+        {
+            /*
+            if (ModelState.IsValid)
+            {
+                //save to database here
+            } else {
+                //catch error
+            }*/
+
+            return RedirectToAction("Workouts");
         }
 
         public IActionResult Workouts() 
