@@ -9,39 +9,39 @@
 
 @using (Html.BeginForm("CreateWorkout", "Home", FormMethod.Post))
 {
+
     @Html.HiddenFor(x => Model.Id)
     <input class="form-control" type="text" placeholder="Name of workout" asp-for="Name" />
 
     <div class="form-group" id="lift-set-container">
         @for (int i = 0; i < Model.LiftSets.Count; i++)
         {
-            
-        <div class="form-group lift-set-item">
-            @Html.HiddenFor( x => Model.LiftSets[i].Id)
-            <label class="form-control" for="LiftName">Type of Lift:</label>
-            <input class="form-control" name="LiftName" type="text" placeholder="Name of lift" asp-for="LiftSets[i].LiftName" />
-            <span class="inline-flex">
-                <span>Sets x Reps:</span>
-                <input type="number" placeholder="0" asp-for="LiftSets[i].SetCount" />
-                <span> x </span>
-                <input type="number" placeholder="0" asp-for="LiftSets[i].RepCount" />
-                <select placeholder="" asp-for="LiftSets[i].RepUnit">
-                    <option value="reps"></option>
-                    <option value="meters">m</option>
-                    <option value="kilometers">km</option>
-                    <option value="feet">ft</option>
-                    <option value="yards">yd</option>
-                    <option value="miles">mi</option>
+            <div class="form-control lift-set-item">
+                <label>Type of Lift:</label>
+                <input type="number" placeholder="0" asp-for="LiftSets[i].Id" />
+                <input type="text" placeholder="Name of lift" asp-for="LiftSets[i].LiftName" />
+                <span class="inline-flex form-control">
+                    <span>Sets x Reps:</span>
+                    <input type="number" placeholder="0" asp-for="LiftSets[i].SetCount" />
+                    <span> x </span>
+                    <input type="number" placeholder="0" asp-for="LiftSets[i].RepCount" />
+                    <select placeholder="" asp-for="LiftSets[i].RepUnit">
+                        <option value="reps"></option>
+                        <option value="meters">m</option>
+                        <option value="kilometers">km</option>
+                        <option value="feet">ft</option>
+                        <option value="yards">yd</option>
+                        <option value="miles">mi</option>
+                    </select>
+                </span>
+                <input type="number" placeholder="0" asp-for="LiftSets[i].Weight" />
+                <select placeholder="" asp-for="LiftSets[i].WeightUnit">
+                    <option value="none"></option>
+                    <option value="pounds">lb</option>
+                    <option value="kilograms">kg</option>
                 </select>
-			</span>
-            <input class="form-control" type="number" placeholder="0" asp-for="LiftSets[i].Weight" />
-            <select class="form-control" placeholder="" asp-for="LiftSets[i].WeightUnit">
-                <option value="none"></option>
-                <option value="pounds">lb</option>
-                <option value="kilograms">kg</option>
-            </select>
-            <button type="button" class="btn btn-danger remove-item">Remove</button>
-        </div>
+                <button type="button" class="btn btn-danger remove-item">Remove</button>
+            </div>
         }
     </div>
 
@@ -54,22 +54,23 @@
     <script>
         $(document).ready(function() {
 
-            //function to add a new input field
+            //function to add a new set
             $('#add-set-button').click(function () {
                 var container = document.getElementById("lift-set-container");
                 //get amount of set items by checking class name
                 var itemCount = container.getElementsByClassName("lift-set-item").length;
+                //for model binding, 'name' and 'id' attributes need to be set
                 var newItemHtml = `
-                    <div class="form-group lift-set-item">
-                        <input class="form-control" name="LiftName" type="number" placeholder="0" asp-for="LiftSets[${itemCount}].Id" />
-                        <label for="LiftName">Type of Lift:</label>
-                        <input type="text" placeholder="Name of lift" asp-for="LiftSets[${itemCount}].LiftName" />
+                    <div class="form-control lift-set-item">
+                        <label>Type of Lift:</label>
+                        <input type="number" placeholder="0" name="LiftSets[${itemCount}].Id" id="LiftSets_${itemCount}__Id" />
+                        <input type="text" placeholder="Name of lift" name="LiftSets[${itemCount}].LiftName" id="LiftSets_${itemCount}__LiftName" />
                         <span class="inline-flex form-control">
 							<span>Sets x Reps:</span>
-                            <input type="number" placeholder="0" asp-for="LiftSets[${itemCount}].SetCount" />
+                            <input type="number" placeholder="0" name="LiftSets[${itemCount}].SetCount" id="LiftSets_${itemCount}__SetCount" />
                             <span> x </span>
-                            <input type="number" placeholder="0" asp-for="LiftSets[${itemCount}].RepCount" />
-                            <select placeholder="" asp-for="LiftSets[${itemCount}].RepUnit">
+                            <input type="number" placeholder="0" name="LiftSets[${itemCount}].RepCount" id="LiftSets_${itemCount}__RepCount" />
+                            <select placeholder="" name="LiftSets[${itemCount}].RepUnit" id="LiftSets_${itemCount}__RepUnit">
                                 <option value="reps"></option>
                                 <option value="meters">m</option>
                                 <option value="kilometers">km</option>
@@ -78,8 +79,8 @@
                                 <option value="miles">mi</option>
                             </select>
 						</span>
-                        <input class="form-control" type="number" placeholder="0" asp-for="LiftSets[${itemCount}].Weight" />
-                        <select class="form-control" placeholder="" asp-for="LiftSets[${itemCount}].WeightUnit">
+                        <input type="number" placeholder="0" name="LiftSets[${itemCount}].Weight" id="LiftSets_${itemCount}__Weight" />
+                        <select placeholder="" name="LiftSets[${itemCount}].WeightUnit" id="LiftSets_${itemCount}__WeightUnit" >
                             <option value="none"></option>
                             <option value="pounds">lb</option>
                             <option value="kilograms">kg</option>
@@ -89,22 +90,41 @@
                 container.innerHTML += newItemHtml;
             });
 
-            //function to remove an input field using delegation
-            /*$('#lift-set-container').on('click', '.remove-item', function () {
-                $(this).closest('.lift-set-container').remove();
-                updateInputNames();
-            });*/
+            //function to remove a set
+            $('#lift-set-container').on('click', '.remove-item', function () {
+                $(this).closest('.lift-set-item').remove();
+                updateInputIndices();
+            });
 
-            //helper function to re-index names if items are removed
-            /*function updateInputNames() {
-                //find all input elements within the liftset-items-container 
-                var items = $('#lift-set-container').find('.lift-set-container input');
-                //iterate over collection of found inputs
+            //function to re-index if items are removed
+            function updateInputIndices() {
+                var items = $('#lift-set-container').children('.lift-set-item');
+
+				//iterate through each lift set item to update the indices
                 items.each(function(index) {
-                    //for each input found, update its name attribute
-                    $(this).find('input[placeholder="Id"]').attr('name', `Items[${index}].Id`);
+                    $(this).find('input, select').each(function() {
+                        var element = $(this);
+
+                        //the 'name' and 'id' attributes have to be updated in order to be correctly bound to the model
+                        //update the 'name' attribute for model binding (ex. LiftSets[0].Id)
+                        var nameAttr = element.attr('name');
+
+                        if (nameAttr) {
+                            //replaces the old index using regex
+                            var updatedName = nameAttr.replace(/LiftSets\[\d+\]/, `LiftSets[${index}]`);
+                            element.attr('name', updatedName);
+
+                            // update the 'id' attribute for model binding (ex. LiftSets_0__Id)
+                            var idAttr = $element.attr('id');
+                            if (idAttr) {
+                                // (LiftSets_0__InputName)
+                                var updatedId = idAttr.replace(/LiftSets_\d+/, `LiftSets_${index}`);
+                                $element.attr('id', updatedId);
+                            }
+                        }
+                    });
                 });
-            }*/
+            }
         });
     </script>
 }
