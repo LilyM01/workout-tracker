@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\CreateEditWorkout\" />
+    <Compile Remove="Views\CreateEditWorkout\**" />
+    <Content Remove="Views\CreateEditWorkout\**" />
+    <EmbeddedResource Remove="Views\CreateEditWorkout\**" />
+    <None Remove="Views\CreateEditWorkout\**" />
   </ItemGroup>
 
 </Project>
