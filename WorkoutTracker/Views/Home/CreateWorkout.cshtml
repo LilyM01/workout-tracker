@@ -16,11 +16,12 @@
     <div class="form-group" id="lift-set-container">
         @for (int i = 0; i < Model.LiftSets.Count; i++)
         {
-            <div class="form-control lift-set-item">
-                <label>Type of Lift:</label>
+            <div class="form-control lift-set-item mt-3">
                 <input type="number" placeholder="0" asp-for="LiftSets[i].Id" />
+                <label class="top-margin-space">Type of Lift:</label>
                 <input type="text" placeholder="Name of lift" asp-for="LiftSets[i].LiftName" />
-                <span class="inline-flex form-control">
+                <br>
+                <span class="inline-flex top-margin-space">
                     <span>Sets x Reps:</span>
                     <input type="number" placeholder="0" asp-for="LiftSets[i].SetCount" />
                     <span> x </span>
@@ -34,13 +35,18 @@
                         <option value="miles">mi</option>
                     </select>
                 </span>
-                <input type="number" placeholder="0" asp-for="LiftSets[i].Weight" />
-                <select placeholder="" asp-for="LiftSets[i].WeightUnit">
-                    <option value="none"></option>
-                    <option value="pounds">lb</option>
-                    <option value="kilograms">kg</option>
-                </select>
-                <button type="button" class="btn btn-danger remove-item">Remove</button>
+                <br>
+                <span class="inline-flex top-margin-space">
+                    <span>Weight:</span>
+                    <input type="number" placeholder="0" asp-for="LiftSets[i].Weight" />
+                    <select placeholder="" asp-for="LiftSets[i].WeightUnit">
+                        <option value="none"></option>
+                        <option value="pounds">lb</option>
+                        <option value="kilograms">kg</option>
+                    </select>
+                </span>
+                <br>
+                <button type="button" class="btn btn-danger remove-item el-right-align">Remove</button>
             </div>
         }
     </div>
@@ -61,11 +67,12 @@
                 var itemCount = container.getElementsByClassName("lift-set-item").length;
                 //for model binding, 'name' and 'id' attributes need to be set
                 var newItemHtml = `
-                    <div class="form-control lift-set-item">
-                        <label>Type of Lift:</label>
+                    <div class="form-control lift-set-item mt-3">
                         <input type="number" placeholder="0" name="LiftSets[${itemCount}].Id" id="LiftSets_${itemCount}__Id" />
+                        <label class="top-margin-space">Type of Lift:</label>
                         <input type="text" placeholder="Name of lift" name="LiftSets[${itemCount}].LiftName" id="LiftSets_${itemCount}__LiftName" />
-                        <span class="inline-flex form-control">
+                        <br>
+                        <span class="inline-flex top-margin-space">
 							<span>Sets x Reps:</span>
                             <input type="number" placeholder="0" name="LiftSets[${itemCount}].SetCount" id="LiftSets_${itemCount}__SetCount" />
                             <span> x </span>
@@ -79,15 +86,20 @@
                                 <option value="miles">mi</option>
                             </select>
 						</span>
-                        <input type="number" placeholder="0" name="LiftSets[${itemCount}].Weight" id="LiftSets_${itemCount}__Weight" />
-                        <select placeholder="" name="LiftSets[${itemCount}].WeightUnit" id="LiftSets_${itemCount}__WeightUnit" >
-                            <option value="none"></option>
-                            <option value="pounds">lb</option>
-                            <option value="kilograms">kg</option>
-                        </select>
-                        <button type="button" class="btn btn-danger remove-item">Remove</button>
+                        <br>
+                        <span class="inline-flex top-margin-space">
+                            <span>Weight:</span>
+                            <input type="number" placeholder="0" name="LiftSets[${itemCount}].Weight" id="LiftSets_${itemCount}__Weight" />
+                            <select placeholder="" name="LiftSets[${itemCount}].WeightUnit" id="LiftSets_${itemCount}__WeightUnit" >
+                                <option value="none"></option>
+                                <option value="pounds">lb</option>
+                                <option value="kilograms">kg</option>
+                            </select>
+                        </span>
+                        <button type="button" class="btn btn-danger remove-item el-right-align">Remove</button>
                     </div>`;
-                container.innerHTML += newItemHtml;
+                //use this function instead of innerHTML to avoid resetting input fields on existing sets
+                container.insertAdjacentHTML('beforeend', newItemHtml);
             });
 
             //function to remove a set

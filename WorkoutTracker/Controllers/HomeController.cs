@@ -11,6 +11,29 @@ namespace WorkoutTracker.Controllers
             return View();
         }
 
+        public IActionResult LogIn(){
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult LogIn(LogInModel model) 
+        {
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult CreateAccount()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateAccount(CreateAccountModel model)
+        {
+            return RedirectToAction("Login");
+        }
+
         public IActionResult CreateWorkout()
         {
             var model = new WorkoutModel();
@@ -35,11 +58,6 @@ namespace WorkoutTracker.Controllers
         public IActionResult Workouts() 
         {
             return View(); 
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

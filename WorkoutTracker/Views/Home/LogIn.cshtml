@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Log In";
+}
+
+@model WorkoutTracker.Models.LogInModel;
+
+<h2>@ViewData["Title"]</h2>
+<form asp-controller="Home" asp-action="LogIn" method="post">
+    <div class="form-control">
+        <label>Username:</label>
+        <input type="text" asp-for="Username" required />
+        <br>
+        <label class="mt-4">Password:</label>
+        <input type="password" asp-for="Password" required />
+
+        <br>
+		<button type="submit" class="btn btn-primary mt-4">Log In</button>
+		<br>
+        <i>Don't have an account?</i>
+        <a asp-controller="Home" asp-action="CreateAccount" class="btn btn-secondary" type="button">Create Account</a>
+    </div>
+</form>

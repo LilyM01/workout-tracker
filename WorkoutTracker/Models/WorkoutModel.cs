@@ -26,7 +26,7 @@ namespace WorkoutTracker.Models
         public int SetCount { get; set; }
 
         public decimal RepCount { get; set; }
-        [Required]
+
         public string? RepUnit { get; set; }
 
         public decimal Weight { get; set; }
