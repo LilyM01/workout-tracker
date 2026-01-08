@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace workout_tracker
 {
     public class Program
@@ -8,6 +10,10 @@ namespace workout_tracker
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Add DbContext with PostgreSQL provider
+            builder.Services.AddDbContext<WorkoutTracker.Data.AppDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 

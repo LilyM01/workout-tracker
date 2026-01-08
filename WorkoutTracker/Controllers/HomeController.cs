@@ -1,11 +1,19 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using WorkoutTracker.Data;
 using WorkoutTracker.Models;
 
 namespace WorkoutTracker.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -19,6 +27,7 @@ namespace WorkoutTracker.Controllers
         [HttpPost]
         public IActionResult LogIn(LogInModel model) 
         {
+
             return RedirectToAction("Index");
         }
 
@@ -31,6 +40,8 @@ namespace WorkoutTracker.Controllers
         [HttpPost]
         public IActionResult CreateAccount(CreateAccountModel model)
         {
+            _context.Users.Add(model);
+            _context.SaveChanges();
             return RedirectToAction("Login");
         }
 

@@ -17,7 +17,7 @@
         <input type="password" asp-for="Password" required placeholder="FYI: 1234 is not a good one.." />
         <br>
         <label>Confirm Password:</label>
-        <input type="password" asp-for="ConfirmPassword" required placeholder="Enter 1234 here again. Wait a minute.." />
+        <input type="password" id="ConfirmPassword" required placeholder="Enter 1234 here again. Wait a minute.." />
         <br>
         <label>Email:</label>
         <input type="email" asp-for="Email" placeholder="Helps recover your account (not required)."/>
@@ -35,3 +35,22 @@
         <button type="submit" class="btn btn-primary mt-4">Create Account</button>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+			//password confirmation check
+            document.querySelector('form').addEventListener('submit', function(e) {
+                var password = document.getElementById("Password").value;
+                var confirmPassword = document.getElementById("ConfirmPassword").value;
+                if (password !== confirmPassword) {
+                    //stop form submission
+                    e.preventDefault();
+                    alert('Passwords do not match. Please try again.');
+                }
+			});
+
+        });
+    </script>
+}
